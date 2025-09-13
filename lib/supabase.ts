@@ -11,7 +11,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     detectSessionInUrl: true,
     // Para desarrollo, permitir usuarios sin confirmar email
-    flowType: 'pkce'
+    flowType: 'pkce',
+    // Configuración adicional para desarrollo
+    debug: process.env.NODE_ENV === 'development'
   }
 })
 

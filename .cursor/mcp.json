@@ -10,15 +10,14 @@
         "NODE_ENV": "development"
       }
     },
-    "supabase-integration": {
-      "command": "npx",
+    "supabase-server": {
+      "command": "node",
       "args": [
-        "@modelcontextprotocol/server-supabase",
-        "--project-url=https://cldwxejwgcsbiysujzwu.supabase.co"
+        "mcp-servers/supabase-server.js"
       ],
       "env": {
         "SUPABASE_URL": "https://cldwxejwgcsbiysujzwu.supabase.co",
-        "SUPABASE_ANON_KEY": "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
+        "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsZHd4ZWp3Z2NzYml5c3Vqend1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3NjE5NDcsImV4cCI6MjA3MzMzNzk0N30.qZCPdEWn1prgfu-BTKweh7cbOY1iM18aH11vHZ225xs"
       }
     }
   },

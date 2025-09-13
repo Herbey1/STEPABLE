@@ -37,18 +37,67 @@ export function useAuth() {
     company: string
     role: string
   }) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name: `${userData.firstName} ${userData.lastName}`,
-          company: userData.company,
-          role: userData.role,
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name: `${userData.firstName} ${userData.lastName}`,
+            company: userData.company,
+            role: userData.role,
+          }
+        }
+      })
+      
+      if (error) {
+        console.warn('Sign up error:', error.message)
+        
+        // Manejar errores específicos
+        if (error.message.includes('For security purposes')) {
+          return { 
+            data: null, 
+            error: { 
+              message: 'Por seguridad, espera unos segundos antes de intentar registrarte nuevamente.' 
+            } 
+          }
+        } else if (error.message.includes('User already registered')) {
+          return { 
+            data: null, 
+            error: { 
+              message: 'Este email ya está registrado. Intenta iniciar sesión o usa otro email.' 
+            } 
+          }
+        } else if (error.message.includes('Invalid email')) {
+          return { 
+            data: null, 
+            error: { 
+              message: 'El formato del email no es válido.' 
+            } 
+          }
         }
       }
-    })
-    return { data, error }
+      
+      // Si el registro fue exitoso pero el email no está confirmado
+      if (data.user && !data.user.email_confirmed_at) {
+        console.log('📧 Usuario registrado, email de confirmación enviado')
+        return { 
+          data, 
+          error: null,
+          message: '¡Registro exitoso! Revisa tu email para confirmar tu cuenta.'
+        }
+      }
+      
+      return { data, error }
+    } catch (err) {
+      console.error('Sign up error:', err)
+      return { 
+        data: null, 
+        error: { 
+          message: 'Error de conexión. Por favor, verifica tu conexión a internet.' 
+        } 
+      }
+    }
   }
 
   const signIn = async (email: string, password: string) => {
@@ -103,6 +152,45 @@ export function useAuth() {
     return { data, error }
   }
 
+  const resendConfirmation = async (email: string) => {
+    try {
+      const { data, error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email
+      })
+      
+      if (error) {
+        console.warn('Resend confirmation error:', error.message)
+        
+        if (error.message.includes('For security purposes')) {
+          return { 
+            data: null, 
+            error: { 
+              message: 'Por seguridad, espera unos segundos antes de solicitar otro email.' 
+            } 
+          }
+        } else if (error.message.includes('Email rate limit exceeded')) {
+          return { 
+            data: null, 
+            error: { 
+              message: 'Has solicitado demasiados emails. Espera unos minutos antes de intentar nuevamente.' 
+            } 
+          }
+        }
+      }
+      
+      return { data, error }
+    } catch (err) {
+      console.error('Resend confirmation error:', err)
+      return { 
+        data: null, 
+        error: { 
+          message: 'Error al reenviar email. Intenta nuevamente más tarde.' 
+        } 
+      }
+    }
+  }
+
   return {
     user,
     session,
@@ -111,5 +199,6 @@ export function useAuth() {
     signIn,
     signOut,
     resetPassword,
+    resendConfirmation,
   }
 }

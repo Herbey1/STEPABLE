@@ -1,0 +1,15 @@
+{
+  "name": "stepable-mcp-servers",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP servers for STEPABLE project",
+  "main": "supabase-server.js",
+  "scripts": {
+    "start:supabase": "node supabase-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.0",
+    "@supabase/supabase-js": "^2.57.4"
+  }
+}
+
