@@ -8,8 +8,6 @@ import { Progress } from "@/components/ui/progress"
 import {
   Home,
   Users,
-  Settings,
-  HelpCircle,
   ChevronLeft,
   ChevronRight,
   Bot,
@@ -20,10 +18,9 @@ import {
 
 interface SidebarProps {
   currentPage?: string
-  userProgress?: number
 }
 
-export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }: SidebarProps) {
+export function StepableSidebar({ currentPage = "dashboard" }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   const mainNavItems = [
@@ -40,12 +37,9 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
         {!isCollapsed && (
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">S</span>
-            </div>
-            <span className="font-bold text-sidebar-foreground">Stepable</span>
-          </div>
+          <h2 className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider">
+            Navigation
+          </h2>
         )}
         <Button
           variant="ghost"
@@ -58,19 +52,6 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
       </div>
 
       <ScrollArea className="flex-1">
-        {/* Progress Overview */}
-        {!isCollapsed && (
-          <div className="p-4 border-b border-sidebar-border">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-sidebar-foreground">Overall Progress</span>
-                <span className="text-sidebar-primary font-medium">{userProgress}%</span>
-              </div>
-              <Progress value={userProgress} className="h-2" />
-            </div>
-          </div>
-        )}
-
         {/* Main Navigation */}
         <div className="p-2">
           <div className="space-y-1">
@@ -95,29 +76,7 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
 
       </ScrollArea>
 
-      {/* Footer */}
-      <div className="p-2 border-t border-sidebar-border">
-        <div className="space-y-1">
-          <Link href="/help">
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
-            >
-              <HelpCircle className="h-4 w-4" />
-              {!isCollapsed && <span>Help</span>}
-            </Button>
-          </Link>
-          <Link href="/settings">
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
-            >
-              <Settings className="h-4 w-4" />
-              {!isCollapsed && <span>Settings</span>}
-            </Button>
-          </Link>
-        </div>
-      </div>
+
     </div>
   )
 }
