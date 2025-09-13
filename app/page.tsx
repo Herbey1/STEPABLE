@@ -1,3 +1,6 @@
+"use client"
+
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -15,10 +18,21 @@ export default function LandingPage() {
           <span className="text-xl font-bold text-foreground">Stepable</span>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="ghost">Features</Button>
-          <Button variant="ghost">Pricing</Button>
-          <Button variant="outline">Sign In</Button>
-          <Button>Get Started</Button>
+          <Button 
+            variant="ghost" 
+            onClick={() => {
+              const featuresSection = document.getElementById('features-section')
+              featuresSection?.scrollIntoView({ behavior: 'smooth' })
+            }}
+          >
+            Features
+          </Button>
+          <Link href="/auth/login">
+            <Button variant="outline">Sign In</Button>
+          </Link>
+          <Link href="/auth/register">
+            <Button>Get Started</Button>
+          </Link>
         </div>
       </nav>
 
@@ -37,20 +51,24 @@ export default function LandingPage() {
             new developers productive faster.
           </p>
           <div className="flex items-center justify-center gap-4 pt-6">
-            <Button size="lg" className="gap-2">
-              Start Free Trial
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="lg" className="gap-2 bg-transparent">
-              <Github className="h-4 w-4" />
-              Connect GitHub
-            </Button>
+            <Link href="/auth/register">
+              <Button size="lg" className="gap-2">
+                Start Free Trial
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/auth/register">
+              <Button variant="outline" size="lg" className="gap-2 bg-transparent">
+                <Github className="h-4 w-4" />
+                Connect GitHub
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="px-6 py-20 bg-muted/30">
+      <section id="features-section" className="px-6 py-20 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-4">Everything you need for effective onboarding</h2>

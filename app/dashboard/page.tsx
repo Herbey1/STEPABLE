@@ -1,36 +1,92 @@
 "use client"
 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { StepableSidebar } from "@/components/stepable-sidebar"
 import { StepableHeader } from "@/components/stepable-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { Play, BookOpen, Users, Trophy, Clock, CheckCircle, ArrowRight, Target } from "lucide-react"
+import { Progress } from "@/components/ui/progress"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Plus, Target, Users, ArrowRight, Clock, CheckCircle, BookOpen, Trophy, TrendingUp, Upload, FileText } from "lucide-react"
 import { AiChatWidget } from "@/components/ai-chat-widget"
 
 export default function DashboardPage() {
+  const router = useRouter()
+  const [isCreatingProject, setIsCreatingProject] = useState(false)
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [projectName, setProjectName] = useState("")
+  const [projectDescription, setProjectDescription] = useState("")
+  const [githubRepo, setGithubRepo] = useState("")
+  const [projectType, setProjectType] = useState("")
+
+  const resetForm = () => {
+    setProjectName("")
+    setProjectDescription("")
+    setGithubRepo("")
+    setProjectType("")
+  }
+
+  const createPlaceholderProject = async () => {
+    setIsCreatingProject(true)
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    
+    // Generate a unique project ID
+    const projectId = Math.floor(Math.random() * 10000) + 1000
+    
+    // Create placeholder project with form data
+    const placeholderProject = {
+      id: projectId,
+      name: projectName || "New Onboarding Project",
+      description: projectDescription || "A comprehensive onboarding project to help new team members get up to speed with our development practices and codebase.",
+      role: "Owner",
+      members: 1,
+      progress: 0,
+      status: "active",
+      createdAt: new Date().toISOString().split('T')[0],
+      githubRepo: githubRepo || "company/new-onboarding-project",
+      modules: 8,
+      completedModules: 0,
+      tags: projectType ? [projectType, "TypeScript", "Onboarding"] : ["React", "TypeScript", "Node.js", "Onboarding"],
+      nextLesson: "Project Setup and Environment Configuration"
+    }
+    
+    // In a real app, this would be saved to a database
+    // For now, we'll just navigate to the project detail page
+    setIsCreatingProject(false)
+    resetForm()
+    router.push(`/projects/${projectId}`)
+  }
+
   const recentActivity = [
     {
       id: 1,
       type: "lesson_completed",
       title: "Completed Git Basics - Branching",
       time: "2 hours ago",
-      points: 50,
+
     },
-    {
-      id: 2,
-      type: "achievement",
-      title: "Earned 'Code Reviewer' badge",
-      time: "1 day ago",
-      points: 100,
-    },
+
     {
       id: 3,
       type: "project_joined",
       title: "Joined 'E-commerce Platform' project",
       time: "2 days ago",
-      points: 25,
+
     },
   ]
 
@@ -88,12 +144,138 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-                <p className="text-muted-foreground">Track your progress and continue learning</p>
+                <p className="text-muted-foreground">Manage your projects and track your progress</p>
               </div>
-              <Button className="gap-2">
-                <Play className="h-4 w-4" />
-                Continue Learning
-              </Button>
+            </div>
+
+            {/* Project Management Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-border">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Create New Project
+                  </CardTitle>
+                  <CardDescription>
+                    Start a new learning project and invite team members
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="w-full gap-2">
+                        <Plus className="h-4 w-4" />
+                        Create Project
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Create New Project</DialogTitle>
+                        <DialogDescription>Set up a new onboarding project for your team.</DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="space-y-2">
+                           <Label htmlFor="project-name">Project Name</Label>
+                           <Input 
+                             id="project-name" 
+                             placeholder="Enter project name" 
+                             value={projectName}
+                             onChange={(e) => setProjectName(e.target.value)}
+                           />
+                         </div>
+                         <div className="space-y-2">
+                           <Label htmlFor="project-description">Description</Label>
+                           <Textarea 
+                             id="project-description" 
+                             placeholder="Describe your project" 
+                             value={projectDescription}
+                             onChange={(e) => setProjectDescription(e.target.value)}
+                           />
+                         </div>
+                         <div className="space-y-2">
+                           <Label htmlFor="github-repo">GitHub Repository (Optional)</Label>
+                           <Input 
+                             id="github-repo" 
+                             placeholder="organization/repository" 
+                             value={githubRepo}
+                             onChange={(e) => setGithubRepo(e.target.value)}
+                           />
+                         </div>
+                         <div className="space-y-2">
+                           <Label htmlFor="project-type">Project Type</Label>
+                           <Select value={projectType} onValueChange={setProjectType}>
+                             <SelectTrigger>
+                               <SelectValue placeholder="Select project type" />
+                             </SelectTrigger>
+                             <SelectContent>
+                               <SelectItem value="frontend">Frontend</SelectItem>
+                               <SelectItem value="backend">Backend</SelectItem>
+                               <SelectItem value="fullstack">Full Stack</SelectItem>
+                               <SelectItem value="mobile">Mobile</SelectItem>
+                               <SelectItem value="devops">DevOps</SelectItem>
+                               <SelectItem value="design">Design</SelectItem>
+                             </SelectContent>
+                           </Select>
+                         </div>
+                        <div className="space-y-2">
+                          <Label>Project Library</Label>
+                          <div className="space-y-3">
+                            <p className="text-sm text-muted-foreground">
+                              Set up the initial library for this project with documentation, templates, and resources.
+                            </p>
+                            <div className="grid grid-cols-1 gap-2">
+                              <Button type="button" variant="outline" className="h-20 flex-col gap-2">
+                                <Upload className="h-6 w-6" />
+                                <span className="text-xs">Import Library</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button variant="outline" onClick={() => {
+                          setIsCreateDialogOpen(false)
+                          resetForm()
+                        }}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            setIsCreateDialogOpen(false)
+                            createPlaceholderProject()
+                          }}
+                          disabled={isCreatingProject}
+                        >
+                          {isCreatingProject ? "Creating Project..." : "Create Project"}
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    Join Project
+                  </CardTitle>
+                  <CardDescription>
+                    Enter a project code to join an existing project
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <input 
+                    type="text" 
+                    placeholder="Enter project code" 
+                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                  <Button className="w-full gap-2" variant="outline">
+                    <ArrowRight className="h-4 w-4" />
+                    Join Project
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Stats Cards */}
@@ -133,12 +315,12 @@ export default function DashboardPage() {
 
               <Card className="border-border">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Points Earned</CardTitle>
-                  <Trophy className="h-4 w-4 text-accent" />
+                  <CardTitle className="text-sm font-medium">Learning Time</CardTitle>
+                  <Clock className="h-4 w-4 text-accent" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-foreground">1,250</div>
-                  <p className="text-xs text-muted-foreground">+175 this week</p>
+                  <div className="text-2xl font-bold text-foreground">12h</div>
+                  <p className="text-xs text-muted-foreground">+3h this week</p>
                 </CardContent>
               </Card>
             </div>
@@ -201,16 +383,14 @@ export default function DashboardPage() {
                     <div key={activity.id} className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                         {activity.type === "lesson_completed" && <CheckCircle className="h-4 w-4 text-secondary" />}
-                        {activity.type === "achievement" && <Trophy className="h-4 w-4 text-accent" />}
+
                         {activity.type === "project_joined" && <Users className="h-4 w-4 text-primary" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground">{activity.title}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <p className="text-xs text-muted-foreground">{activity.time}</p>
-                          <Badge variant="outline" className="text-xs">
-                            +{activity.points} pts
-                          </Badge>
+
                         </div>
                       </div>
                     </div>

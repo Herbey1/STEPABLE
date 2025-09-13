@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, Play, CheckCircle, Lock, Clock, Star, Trophy, Target, BookOpen, Code, Zap } from "lucide-react"
+import { ArrowLeft, Play, CheckCircle, Lock, Clock, Target, BookOpen, Code } from "lucide-react"
 import Link from "next/link"
 
 export default function ModulePage({ params }: { params: { id: string } }) {
@@ -22,7 +22,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
     completedLessons: 3,
     estimatedTime: "2 hours",
     difficulty: "Intermediate",
-    xpReward: 250,
   }
 
   const lessons = [
@@ -32,7 +31,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
       description: "Understanding the importance and benefits of code reviews",
       type: "theory",
       duration: "10 min",
-      xp: 25,
       status: "completed",
     },
     {
@@ -41,7 +39,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
       description: "Essential items to check during code reviews",
       type: "theory",
       duration: "15 min",
-      xp: 30,
       status: "completed",
     },
     {
@@ -50,7 +47,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
       description: "How to provide helpful and respectful feedback",
       type: "interactive",
       duration: "20 min",
-      xp: 40,
       status: "completed",
     },
     {
@@ -59,7 +55,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
       description: "Practice reviewing a real pull request",
       type: "exercise",
       duration: "25 min",
-      xp: 50,
       status: "current",
     },
     {
@@ -68,7 +63,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
       description: "Advanced strategies for complex code reviews",
       type: "theory",
       duration: "15 min",
-      xp: 35,
       status: "locked",
     },
   ]
@@ -152,10 +146,7 @@ export default function ModulePage({ params }: { params: { id: string } }) {
                         <Target className="h-4 w-4" />
                         <span>{module.difficulty}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4" />
-                        <span>{module.xpReward} XP total</span>
-                      </div>
+
                     </div>
                   </div>
                   <Badge variant="default" className="text-sm">
@@ -215,17 +206,13 @@ export default function ModulePage({ params }: { params: { id: string } }) {
                                 <Clock className="h-3 w-3" />
                                 <span>{lesson.duration}</span>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <Star className="h-3 w-3" />
-                                <span>{lesson.xp} XP</span>
-                              </div>
+
                             </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           {lesson.status === "completed" && (
                             <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                              <Trophy className="h-3 w-3" />
                               Review
                             </Button>
                           )}
@@ -257,12 +244,12 @@ export default function ModulePage({ params }: { params: { id: string } }) {
               <Card className="border-secondary bg-secondary/5">
                 <CardContent className="pt-6 text-center space-y-4">
                   <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto">
-                    <Trophy className="h-8 w-8 text-secondary-foreground" />
+                    <CheckCircle className="h-8 w-8 text-secondary-foreground" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground">Module Completed!</h3>
                     <p className="text-muted-foreground">
-                      Congratulations! You've earned {module.xpReward} XP and unlocked the next module.
+                      Congratulations! You have completed this module and can proceed to the next one.
                     </p>
                   </div>
                   <div className="flex items-center justify-center gap-2">
@@ -271,7 +258,6 @@ export default function ModulePage({ params }: { params: { id: string } }) {
                       Next Module
                     </Button>
                     <Button variant="outline" className="gap-2 bg-transparent">
-                      <Zap className="h-4 w-4" />
                       Practice More
                     </Button>
                   </div>
