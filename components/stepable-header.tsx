@@ -19,7 +19,6 @@ interface HeaderProps {
     name: string
     email: string
     avatar?: string
-    level: string
   }
 }
 
@@ -27,7 +26,6 @@ export function StepableHeader({
   user = {
     name: "Alex Developer",
     email: "alex@company.com",
-    level: "Level 3",
   },
 }: HeaderProps) {
   return (
@@ -67,7 +65,7 @@ export function StepableHeader({
               </Avatar>
               <div className="hidden md:block text-left">
                 <div className="text-sm font-medium">{user.name}</div>
-                <div className="text-xs text-muted-foreground">{user.level}</div>
+                <div className="text-xs text-muted-foreground">{user.email}</div>
               </div>
             </Button>
           </DropdownMenuTrigger>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { Play, BookOpen, Users, Trophy, Clock, CheckCircle, ArrowRight, Target } from "lucide-react"
+import { Play, BookOpen, Users, Clock, CheckCircle, ArrowRight, Target } from "lucide-react"
 import { AiChatWidget } from "@/components/ai-chat-widget"
 
 export default function DashboardPage() {
@@ -16,21 +16,15 @@ export default function DashboardPage() {
       type: "lesson_completed",
       title: "Completed Git Basics - Branching",
       time: "2 hours ago",
-      points: 50,
+
     },
-    {
-      id: 2,
-      type: "achievement",
-      title: "Earned 'Code Reviewer' badge",
-      time: "1 day ago",
-      points: 100,
-    },
+
     {
       id: 3,
       type: "project_joined",
       title: "Joined 'E-commerce Platform' project",
       time: "2 days ago",
-      points: 25,
+
     },
   ]
 
@@ -133,12 +127,12 @@ export default function DashboardPage() {
 
               <Card className="border-border">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Points Earned</CardTitle>
-                  <Trophy className="h-4 w-4 text-accent" />
+                  <CardTitle className="text-sm font-medium">Learning Time</CardTitle>
+                  <Clock className="h-4 w-4 text-accent" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-foreground">1,250</div>
-                  <p className="text-xs text-muted-foreground">+175 this week</p>
+                  <div className="text-2xl font-bold text-foreground">12h</div>
+                  <p className="text-xs text-muted-foreground">+3h this week</p>
                 </CardContent>
               </Card>
             </div>
@@ -201,16 +195,14 @@ export default function DashboardPage() {
                     <div key={activity.id} className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                         {activity.type === "lesson_completed" && <CheckCircle className="h-4 w-4 text-secondary" />}
-                        {activity.type === "achievement" && <Trophy className="h-4 w-4 text-accent" />}
+
                         {activity.type === "project_joined" && <Users className="h-4 w-4 text-primary" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground">{activity.title}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <p className="text-xs text-muted-foreground">{activity.time}</p>
-                          <Badge variant="outline" className="text-xs">
-                            +{activity.points} pts
-                          </Badge>
+
                         </div>
                       </div>
                     </div>

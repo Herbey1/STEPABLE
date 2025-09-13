@@ -41,7 +41,6 @@ export default function LessonPage({ params }: { params: { id: string } }) {
     title: "PR Review Simulation",
     description: "Practice reviewing a real pull request",
     type: "exercise",
-    xp: 50,
     estimatedTime: "25 min",
   }
 
@@ -335,10 +334,6 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
                   <span>{lesson.estimatedTime}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Star className="h-4 w-4" />
-                  <span>{lesson.xp} XP</span>
                 </div>
               </div>
             </div>

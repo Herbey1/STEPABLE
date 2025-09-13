@@ -13,8 +13,6 @@ import {
   HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Trophy,
-  Target,
   Bot,
   Play,
   CheckCircle,
@@ -31,7 +29,6 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
 
   const mainNavItems = [
     { icon: Home, label: "Dashboard", href: "/dashboard", active: currentPage === "dashboard" },
-    { icon: Target, label: "My Journey", href: "/journey", active: currentPage === "journey" },
     { icon: BookOpen, label: "Library", href: "/library", active: currentPage === "library" },
     { icon: Users, label: "Projects", href: "/projects", active: currentPage === "projects" },
     { icon: Bot, label: "AI Assistant", href: "/assistant", active: currentPage === "assistant" },
@@ -80,10 +77,6 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
                 <span className="text-sidebar-primary font-medium">{userProgress}%</span>
               </div>
               <Progress value={userProgress} className="h-2" />
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Trophy className="h-3 w-3" />
-                <span>Level 3 Developer</span>
-              </div>
             </div>
           </div>
         )}
