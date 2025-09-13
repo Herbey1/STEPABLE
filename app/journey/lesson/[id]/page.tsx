@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { StepableSidebar } from "@/components/stepable-sidebar"
-import { StepableHeader } from "@/components/stepable-header"
+import { UnifiedHeader } from "@/components/unified-header"
+import { UnifiedFooter } from "@/components/unified-footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -136,22 +137,26 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   }
 
   const renderStepContent = () => {
+    if (!currentStepData) {
+      return <div className="text-center text-muted-foreground">Loading step data...</div>
+    }
+
     switch (currentStepData.type) {
       case "theory":
         return (
           <div className="space-y-6">
             <div className="prose prose-sm max-w-none">
-              <p className="text-foreground leading-relaxed">{currentStepData.content.text}</p>
+              <p className="text-foreground leading-relaxed">{currentStepData.content?.text || ''}</p>
             </div>
             <div className="space-y-3">
               <h4 className="font-semibold text-foreground">Key Points to Remember:</h4>
               <ul className="space-y-2">
-                {currentStepData.content.points.map((point, index) => (
+                {currentStepData.content?.points?.map((point, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <CheckCircle className="h-4 w-4 text-secondary mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-foreground">{point}</span>
                   </li>
-                ))}
+                )) || []}
               </ul>
             </div>
           </div>
@@ -163,7 +168,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-4">{currentStepData.question}</h3>
               <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer}>
-                {currentStepData.options.map((option, index) => (
+                {currentStepData.options?.map((option, index) => (
                   <div key={index} className="flex items-center space-x-2">
                     <RadioGroupItem value={index.toString()} id={`option-${index}`} />
                     <Label htmlFor={`option-${index}`} className="text-sm">
@@ -247,11 +252,11 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                   <div className="space-y-2">
                     <div className="font-medium">Expected Issues to Identify:</div>
                     <ul className="list-disc list-inside space-y-1">
-                      {currentStepData.expectedIssues.map((issue, index) => (
+                      {currentStepData.expectedIssues?.map((issue, index) => (
                         <li key={index} className="text-sm">
                           {issue}
                         </li>
-                      ))}
+                      )) || []}
                     </ul>
                   </div>
                 </AlertDescription>
@@ -310,10 +315,11 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <StepableSidebar currentPage="journey" />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <StepableHeader />
+    <div className="min-h-screen bg-background flex flex-col">
+      <UnifiedHeader isAuthenticated={true} />
+      <div className="flex flex-1">
+        <StepableSidebar currentPage="journey" />
+        <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Header */}
@@ -407,7 +413,9 @@ export default function LessonPage({ params }: { params: { id: string } }) {
             </div>
           </div>
         </main>
+        </div>
       </div>
+      <UnifiedFooter isAuthenticated={true} />
     </div>
   )
 }

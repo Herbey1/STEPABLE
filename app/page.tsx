@@ -1,31 +1,17 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { UnifiedHeader } from "@/components/unified-header"
+import { UnifiedFooter } from "@/components/unified-footer"
 import { ArrowRight, Users, BookOpen, Target, Zap, Github, Bot } from "lucide-react"
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="flex items-center justify-between p-6 border-b border-border">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">S</span>
-          </div>
-          <span className="text-xl font-bold text-foreground">Stepable</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button variant="ghost">Features</Button>
-          <Button variant="ghost">Pricing</Button>
-          <Link href="/auth/login">
-            <Button variant="outline">Sign In</Button>
-          </Link>
-          <Link href="/auth/register">
-            <Button>Get Started</Button>
-          </Link>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-background flex flex-col">
+      <UnifiedHeader isAuthenticated={false} />
 
       {/* Hero Section */}
       <section className="px-6 py-20 text-center">
@@ -59,7 +45,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="px-6 py-20 bg-muted/30">
+      <section id="features-section" className="px-6 py-20 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-4">Everything you need for effective onboarding</h2>
@@ -136,18 +122,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border px-6 py-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">S</span>
-            </div>
-            <span className="font-medium text-foreground">Stepable</span>
-          </div>
-          <p className="text-sm text-muted-foreground">© 2024 Stepable. All rights reserved.</p>
-        </div>
-      </footer>
+      <UnifiedFooter isAuthenticated={false} />
     </div>
   )
 }

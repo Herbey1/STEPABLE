@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { StepableSidebar } from "@/components/stepable-sidebar"
-import { StepableHeader } from "@/components/stepable-header"
+import { UnifiedHeader } from "@/components/unified-header"
+import { UnifiedFooter } from "@/components/unified-footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -188,79 +189,77 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <StepableSidebar currentPage="library" />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <StepableHeader />
+    <div className="min-h-screen bg-background flex flex-col">
+      <UnifiedHeader isAuthenticated={true} />
+      <div className="flex flex-1">
+        <StepableSidebar currentPage="library" />
+        <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Document Library</h1>
-                <p className="text-muted-foreground">Access guides, templates, and resources for your team</p>
+                <h1 className="text-3xl font-bold text-foreground">Project Library</h1>
+                <p className="text-muted-foreground">Access guides, templates, and resources for this project</p>
               </div>
-              <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className="gap-2">
-                    <Plus className="h-4 w-4" />
-                    Add Document
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Add New Document</DialogTitle>
-                    <DialogDescription>Create a new document or add an external resource.</DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="doc-title">Title</Label>
-                      <Input id="doc-title" placeholder="Document title" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="doc-description">Description</Label>
-                      <Textarea id="doc-description" placeholder="Brief description" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="doc-type">Type</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select document type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="guide">Guide</SelectItem>
-                          <SelectItem value="template">Template</SelectItem>
-                          <SelectItem value="checklist">Checklist</SelectItem>
-                          <SelectItem value="video">Video</SelectItem>
-                          <SelectItem value="link">External Link</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="doc-category">Category</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="frontend">Frontend</SelectItem>
-                          <SelectItem value="backend">Backend</SelectItem>
-                          <SelectItem value="devops">DevOps</SelectItem>
-                          <SelectItem value="testing">Testing</SelectItem>
-                          <SelectItem value="design">Design</SelectItem>
-                          <SelectItem value="general">General</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                      Cancel
+              <div className="flex items-center gap-4">
+                <Select defaultValue="project-1">
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Select project" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="project-1">E-commerce Platform</SelectItem>
+                    <SelectItem value="project-2">Mobile App Redesign</SelectItem>
+                    <SelectItem value="project-3">API Gateway Project</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Document
                     </Button>
-                    <Button onClick={() => setIsCreateDialogOpen(false)}>Create Document</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Add New Document</DialogTitle>
+                      <DialogDescription>Upload or link a new document to this project's library</DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="title" className="text-right">
+                          Title
+                        </Label>
+                        <Input id="title" className="col-span-3" />
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="description" className="text-right">
+                          Description
+                        </Label>
+                        <Textarea id="description" className="col-span-3" />
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="type" className="text-right">
+                          Type
+                        </Label>
+                        <Select>
+                          <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="guide">Guide</SelectItem>
+                            <SelectItem value="template">Template</SelectItem>
+                            <SelectItem value="checklist">Checklist</SelectItem>
+                            <SelectItem value="video">Video</SelectItem>
+                            <SelectItem value="link">Link</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <Button type="submit">Add Document</Button>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
             {/* Search and Filters */}
@@ -510,7 +509,9 @@ export default function LibraryPage() {
             </Tabs>
           </div>
         </main>
+        </div>
       </div>
+      <UnifiedFooter isAuthenticated={true} />
     </div>
   )
 }

@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { StepableSidebar } from "@/components/stepable-sidebar"
-import { StepableHeader } from "@/components/stepable-header"
+import { UnifiedHeader } from "@/components/unified-header"
+import { UnifiedFooter } from "@/components/unified-footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,7 +22,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Search, Users, Settings, Crown, Calendar, GitBranch, Target, MoreHorizontal } from "lucide-react"
+import { Plus, Search, Users, Settings, Crown, Calendar, GitBranch, Target, MoreHorizontal, Upload, FileText } from "lucide-react"
 
 export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -69,42 +70,16 @@ export default function ProjectsPage() {
     },
   ]
 
-  const availableProjects = [
-    {
-      id: 4,
-      name: "DevOps Pipeline",
-      description: "CI/CD pipeline setup and deployment automation",
-      owner: "Sarah Johnson",
-      members: 12,
-      difficulty: "Advanced",
-      estimatedTime: "3-4 weeks",
-      tags: ["DevOps", "Docker", "Kubernetes"],
-    },
-    {
-      id: 5,
-      name: "React Component Library",
-      description: "Shared component library for all frontend projects",
-      owner: "Mike Chen",
-      members: 6,
-      difficulty: "Intermediate",
-      estimatedTime: "2-3 weeks",
-      tags: ["React", "TypeScript", "Storybook"],
-    },
-  ]
-
   const filteredMyProjects = myProjects.filter((project) =>
     project.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  const filteredAvailableProjects = availableProjects.filter((project) =>
-    project.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
-
   return (
-    <div className="flex h-screen bg-background">
-      <StepableSidebar currentPage="projects" />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <StepableHeader />
+    <div className="min-h-screen bg-background flex flex-col">
+      <UnifiedHeader isAuthenticated={true} />
+      <div className="flex flex-1">
+        <StepableSidebar currentPage="projects" />
+        <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header */}
@@ -154,6 +129,24 @@ export default function ProjectsPage() {
                         </SelectContent>
                       </Select>
                     </div>
+                    <div className="space-y-2">
+                      <Label>Project Library</Label>
+                      <div className="space-y-3">
+                        <p className="text-sm text-muted-foreground">
+                          Set up the initial library for this project with documentation, templates, and resources.
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button type="button" variant="outline" className="h-20 flex-col gap-2">
+                            <FileText className="h-6 w-6" />
+                            <span className="text-xs">Start Empty</span>
+                          </Button>
+                          <Button type="button" variant="outline" className="h-20 flex-col gap-2">
+                            <Upload className="h-6 w-6" />
+                            <span className="text-xs">Import Library</span>
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
@@ -179,22 +172,25 @@ export default function ProjectsPage() {
             </div>
 
             {/* Projects Tabs */}
-            <Tabs defaultValue="my-projects" className="space-y-6">
-              <TabsList>
-                <TabsTrigger value="my-projects">My Projects</TabsTrigger>
-                <TabsTrigger value="available">Available Projects</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="my-projects" className="space-y-4">
+            <div className="space-y-8">
+              {/* Own Projects Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-accent" />
+                  <h2 className="text-xl font-semibold">My Projects</h2>
+                  <Badge variant="secondary" className="ml-2">
+                    {myProjects.filter(p => p.role === "Owner").length}
+                  </Badge>
+                </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {filteredMyProjects.map((project) => (
-                    <Card key={project.id} className="border-border">
+                  {filteredMyProjects.filter(project => project.role === "Owner").map((project) => (
+                    <Card key={project.id} className="border-border border-2 border-accent/20">
                       <CardHeader>
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
                             <CardTitle className="flex items-center gap-2">
                               {project.name}
-                              {project.role === "Owner" && <Crown className="h-4 w-4 text-accent" />}
+                              <Crown className="h-4 w-4 text-accent" />
                             </CardTitle>
                             <CardDescription>{project.description}</CardDescription>
                           </div>
@@ -258,79 +254,95 @@ export default function ProjectsPage() {
                     </Card>
                   ))}
                 </div>
-              </TabsContent>
+              </div>
 
-              <TabsContent value="available" className="space-y-4">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {filteredAvailableProjects.map((project) => (
-                    <Card key={project.id} className="border-border">
-                      <CardHeader>
-                        <div className="space-y-1">
-                          <CardTitle>{project.name}</CardTitle>
-                          <CardDescription>{project.description}</CardDescription>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{project.members} members</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            <span>{project.estimatedTime}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">Owner:</span>
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-6 w-6">
-                              <AvatarFallback className="text-xs">
-                                {project.owner
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span className="text-sm font-medium">{project.owner}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            variant={
-                              project.difficulty === "Beginner"
-                                ? "secondary"
-                                : project.difficulty === "Intermediate"
-                                  ? "default"
-                                  : "destructive"
-                            }
-                          >
-                            {project.difficulty}
-                          </Badge>
-                          <div className="flex gap-1">
-                            {project.tags.map((tag) => (
-                              <Badge key={tag} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-
-                        <Button className="w-full gap-2">
-                          <Users className="h-4 w-4" />
-                          Join Project
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+              {/* Member Projects Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-muted-foreground" />
+                  <h2 className="text-xl font-semibold">Projects I'm Member Of</h2>
+                  <Badge variant="outline" className="ml-2">
+                    {myProjects.filter(p => p.role === "Member").length}
+                  </Badge>
                 </div>
-              </TabsContent>
-            </Tabs>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                   {filteredMyProjects.filter(project => project.role === "Member").map((project) => (
+                     <Card key={project.id} className="border-border border-l-4 border-l-muted-foreground/30">
+                       <CardHeader>
+                         <div className="flex items-start justify-between">
+                           <div className="space-y-1">
+                             <CardTitle className="flex items-center gap-2">
+                               {project.name}
+                               <Badge variant="outline" className="text-xs">
+                                 Member
+                               </Badge>
+                             </CardTitle>
+                             <CardDescription>{project.description}</CardDescription>
+                           </div>
+                           <Button variant="ghost" size="sm">
+                             <MoreHorizontal className="h-4 w-4" />
+                           </Button>
+                         </div>
+                       </CardHeader>
+                       <CardContent className="space-y-4">
+                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                           <div className="flex items-center gap-1">
+                             <Users className="h-4 w-4" />
+                             <span>{project.members} members</span>
+                           </div>
+                           <div className="flex items-center gap-1">
+                             <Calendar className="h-4 w-4" />
+                             <span>Joined {new Date(project.createdAt).toLocaleDateString()}</span>
+                           </div>
+                           {project.githubRepo && (
+                             <div className="flex items-center gap-1">
+                               <GitBranch className="h-4 w-4" />
+                               <span>{project.githubRepo}</span>
+                             </div>
+                           )}
+                         </div>
+
+                         <div className="space-y-2">
+                           <div className="flex items-center justify-between text-sm">
+                             <span className="text-muted-foreground">My Progress</span>
+                             <span className="font-medium">{project.progress}%</span>
+                           </div>
+                           <Progress value={project.progress} className="h-2" />
+                           <div className="flex items-center justify-between text-xs text-muted-foreground">
+                             <span>
+                               {project.completedModules}/{project.modules} modules completed
+                             </span>
+                             <Badge
+                               variant={
+                                 project.status === "active"
+                                   ? "default"
+                                   : project.status === "completed"
+                                     ? "secondary"
+                                     : "outline"
+                               }
+                             >
+                               {project.status}
+                             </Badge>
+                           </div>
+                         </div>
+
+                         <div className="flex gap-2">
+                           <Button className="flex-1 gap-2" variant="secondary">
+                             <Target className="h-4 w-4" />
+                             Continue Learning
+                           </Button>
+                         </div>
+                       </CardContent>
+                     </Card>
+                   ))}
+                 </div>
+               </div>
+            </div>
           </div>
         </main>
+        </div>
       </div>
+      <UnifiedFooter isAuthenticated={true} />
     </div>
   )
 }
