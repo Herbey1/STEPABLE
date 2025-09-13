@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Eye, EyeOff, Github, Mail, ArrowLeft, CheckCircle } from "lucide-react"
+import { Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react"
 import Link from "next/link"
 
 export default function RegisterPage() {
@@ -98,26 +97,7 @@ export default function RegisterPage() {
             <CardDescription>Start your onboarding journey with your team</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Social Registration */}
-            <div className="space-y-3">
-              <Button variant="outline" className="w-full gap-2 bg-transparent">
-                <Github className="h-4 w-4" />
-                Continue with GitHub
-              </Button>
-              <Button variant="outline" className="w-full gap-2 bg-transparent">
-                <Mail className="h-4 w-4" />
-                Continue with Google
-              </Button>
-            </div>
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with email</span>
-              </div>
-            </div>
 
             {/* Registration Form */}
             <form onSubmit={handleRegister} className="space-y-4">

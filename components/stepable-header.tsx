@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Bell, Search, User, LogOut, Settings } from "lucide-react"
+import { User, LogOut, Settings } from "lucide-react"
 
 interface HeaderProps {
   user?: {
@@ -38,18 +38,6 @@ export function StepableHeader({
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Search */}
-        <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-          <Search className="h-4 w-4" />
-          <span className="hidden md:inline">Search</span>
-        </Button>
-
-        {/* Notifications */}
-        <Button variant="outline" size="sm" className="relative bg-transparent">
-          <Bell className="h-4 w-4" />
-          <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 text-xs bg-destructive">3</Badge>
-        </Button>
-
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

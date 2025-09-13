@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,8 +18,15 @@ export default function LandingPage() {
           <span className="text-xl font-bold text-foreground">Stepable</span>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="ghost">Features</Button>
-          <Button variant="ghost">Pricing</Button>
+          <Button 
+            variant="ghost" 
+            onClick={() => {
+              const featuresSection = document.getElementById('features-section')
+              featuresSection?.scrollIntoView({ behavior: 'smooth' })
+            }}
+          >
+            Features
+          </Button>
           <Link href="/auth/login">
             <Button variant="outline">Sign In</Button>
           </Link>
@@ -59,7 +68,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="px-6 py-20 bg-muted/30">
+      <section id="features-section" className="px-6 py-20 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-4">Everything you need for effective onboarding</h2>
