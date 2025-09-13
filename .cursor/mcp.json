@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "stepable-project": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\8vo semestre\\Arkus\\STEPABLE-main"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "supabase-integration": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-supabase",
+        "--project-url=https://cldwxejwgcsbiysujzwu.supabase.co"
+      ],
+      "env": {
+        "SUPABASE_URL": "https://cldwxejwgcsbiysujzwu.supabase.co",
+        "SUPABASE_ANON_KEY": "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
+      }
+    }
+  },
+  "projectSettings": {
+    "name": "STEPABLE",
+    "type": "nextjs",
+    "framework": "next.js",
+    "version": "14.2.32",
+    "features": [
+      "authentication",
+      "supabase-integration",
+      "typescript",
+      "tailwind-css",
+      "shadcn-ui"
+    ],
+    "environment": {
+      "development": {
+        "supabaseUrl": "https://cldwxejwgcsbiysujzwu.supabase.co",
+        "nodeEnv": "development"
+      }
+    }
+  }
+}
