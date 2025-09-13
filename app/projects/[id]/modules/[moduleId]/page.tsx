@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { StepableSidebar } from "@/components/stepable-sidebar"
-import { StepableHeader } from "@/components/stepable-header"
+import { UnifiedHeader } from "@/components/unified-header"
+import { UnifiedFooter } from "@/components/unified-footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -394,10 +395,11 @@ const secretKey = process.env.API_SECRET_KEY
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <StepableSidebar currentPage="projects" />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <StepableHeader />
+    <div className="min-h-screen bg-background flex flex-col">
+      <UnifiedHeader isAuthenticated={true} />
+      <div className="flex flex-1">
+        <StepableSidebar currentPage="projects" />
+        <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header */}
@@ -598,7 +600,9 @@ const secretKey = process.env.API_SECRET_KEY
             </div>
           </div>
         </main>
+        </div>
       </div>
+      <UnifiedFooter isAuthenticated={true} />
     </div>
   )
 }

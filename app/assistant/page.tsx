@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react"
 import { StepableSidebar } from "@/components/stepable-sidebar"
-import { StepableHeader } from "@/components/stepable-header"
+import { UnifiedHeader } from "@/components/unified-header"
+import { UnifiedFooter } from "@/components/unified-footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -195,10 +196,11 @@ function UserProfile({ user }) {
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <StepableSidebar currentPage="assistant" />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <StepableHeader />
+    <div className="min-h-screen bg-background flex flex-col">
+      <UnifiedHeader isAuthenticated={true} />
+      <div className="flex flex-1">
+        <StepableSidebar currentPage="assistant" />
+        <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 flex overflow-hidden">
           <div className="flex-1 flex flex-col">
             {/* Chat Header */}
@@ -411,7 +413,9 @@ function UserProfile({ user }) {
             </Card>
           </div>
         </main>
+        </div>
       </div>
+      <UnifiedFooter isAuthenticated={true} />
     </div>
   )
 }
