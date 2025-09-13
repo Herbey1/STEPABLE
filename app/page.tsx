@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -17,8 +18,12 @@ export default function LandingPage() {
         <div className="flex items-center gap-4">
           <Button variant="ghost">Features</Button>
           <Button variant="ghost">Pricing</Button>
-          <Button variant="outline">Sign In</Button>
-          <Button>Get Started</Button>
+          <Link href="/auth/login">
+            <Button variant="outline">Sign In</Button>
+          </Link>
+          <Link href="/auth/register">
+            <Button>Get Started</Button>
+          </Link>
         </div>
       </nav>
 
@@ -37,14 +42,18 @@ export default function LandingPage() {
             new developers productive faster.
           </p>
           <div className="flex items-center justify-center gap-4 pt-6">
-            <Button size="lg" className="gap-2">
-              Start Free Trial
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="lg" className="gap-2 bg-transparent">
-              <Github className="h-4 w-4" />
-              Connect GitHub
-            </Button>
+            <Link href="/auth/register">
+              <Button size="lg" className="gap-2">
+                Start Free Trial
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/auth/register">
+              <Button variant="outline" size="lg" className="gap-2 bg-transparent">
+                <Github className="h-4 w-4" />
+                Connect GitHub
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

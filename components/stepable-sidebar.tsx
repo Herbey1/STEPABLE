@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Progress } from "@/components/ui/progress"
@@ -91,18 +92,19 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
         <div className="p-2">
           <div className="space-y-1">
             {mainNavItems.map((item) => (
-              <Button
-                key={item.label}
-                variant={item.active ? "default" : "ghost"}
-                className={`w-full justify-start gap-3 ${
-                  item.active
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent"
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                {!isCollapsed && <span>{item.label}</span>}
-              </Button>
+              <Link key={item.label} href={item.href}>
+                <Button
+                  variant={item.active ? "default" : "ghost"}
+                  className={`w-full justify-start gap-3 ${
+                    item.active
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent"
+                  }`}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {!isCollapsed && <span>{item.label}</span>}
+                </Button>
+              </Link>
             ))}
           </div>
         </div>
@@ -136,20 +138,24 @@ export function StepableSidebar({ currentPage = "dashboard", userProgress = 65 }
       {/* Footer */}
       <div className="p-2 border-t border-sidebar-border">
         <div className="space-y-1">
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
-          >
-            <HelpCircle className="h-4 w-4" />
-            {!isCollapsed && <span>Help</span>}
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
-          >
-            <Settings className="h-4 w-4" />
-            {!isCollapsed && <span>Settings</span>}
-          </Button>
+          <Link href="/help">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
+            >
+              <HelpCircle className="h-4 w-4" />
+              {!isCollapsed && <span>Help</span>}
+            </Button>
+          </Link>
+          <Link href="/settings">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
+            >
+              <Settings className="h-4 w-4" />
+              {!isCollapsed && <span>Settings</span>}
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
